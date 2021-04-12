@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo Firebase</title>
+  </head>
+  <body>
+    <button onclick="login()">Login com Google</button>
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-auth.js"></script>
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyD0WI9WOh6Wcuf6MHyycFE3RMGzDfGW8zA",
+        authDomain: "todo-d6b0b.firebaseapp.com",
+        projectId: "todo-d6b0b",
+        storageBucket: "todo-d6b0b.appspot.com",
+        messagingSenderId: "1002296545258",
+        appId: "1:1002296545258:web:dd3b35c213921396692c93",
+      };
+      firebase.initializeApp(firebaseConfig);
+      var provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
+
+      function login() {
+        firebase
+          .auth()
+          .signInWithPopup(provider)
+          .then((result) => {
+            var token = result.credential.accessToken;
+            var user = result.user;
+            console.log(token);
+            console.log(user);
+
+            firebase
+              .auth()
+              .currentUser.getIdToken()
+              .then((idToken) => {
+                console.log(idToken);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    </script>
+  </body>
+</html>
